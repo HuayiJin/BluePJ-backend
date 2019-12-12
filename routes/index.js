@@ -9,6 +9,14 @@ router.get('/', function(req, res, next) {
   res.render('index.html', { title: 'ExpressTitle' });
 });
 
+/**
+ * 参数 model
+ */
 router.get('/get/ModelRating/', query.getModelRating);
+
+/**
+ * 参数 model
+ */
+router.get('/get/FaultDist/', query.getFaultDist);
 
 module.exports = router;

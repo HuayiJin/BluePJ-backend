@@ -30,7 +30,7 @@ exports.getModelRating = function (req, res) {
         return -1;
     }
     var localsql = 
-        "SELECT * FROM bluepj.model_rating WHERE model='" + req.query.model + "';";
+        "SELECT * FROM model_rating WHERE model='" + req.query.model + "';";
     console.log('localsql is ' + localsql);
 
     db(localsql, function (err, resdata) {
@@ -43,3 +43,22 @@ exports.getModelRating = function (req, res) {
     });
 }
 
+exports.getFaultDist = function (req, res) {
+    console.log(req.query);
+    if(! req.query.model){
+        res.status(200).end("Lost model name");
+        return -1;
+    }
+    var localsql = 
+        "SELECT * FROM fault_distribution WHERE model='" + req.query.model + "';";
+    console.log('localsql is ' + localsql);
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            console.log(resdata);
+            res.status(200).send(resdata);
+        }
+    });
+}
