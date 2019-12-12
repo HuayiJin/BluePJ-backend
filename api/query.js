@@ -87,13 +87,36 @@ exports.getSales = function (req, res) {
         return -1;
     }
 
-    if(req.query.year && req.query.month){
+    if(req.query.year & req.query.month){
         var localsql = 
-        "SELECT `rank`, `price`, `salesNum`, `salesSum` FROM sales WHERE model='" + req.query.model + "' and year=" + req.query.year + " and month=" + req.query.month + ";";
+                "SELECT `rank`, `price`, `salesNum`, `salesSum` FROM sales WHERE model='" + req.query.model + "' and `year`=" + req.query.year + " and `month`=" + req.query.month + ";"
     }else{
-        res.status(200).end("enter year&week");
+        var localsql = 
+                "SELECT `year`, `month`, `salesNum` FROM sales WHERE model='" + req.query.model + "';"
+    }
+
+    console.log('localsql is ' + localsql);
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            res.status(200).send(resdata);
+        }
+    });
+}
+
+exports.getAllBrandSales = function (req, res) {
+    console.log(req.query);
+    if(!req.query.year || !req.query.month){
+        res.status(200).end("enter year and month");
         return -1;
     }
+
+    var localsql = 
+    "SELECT `brand`, Sum( sales.salesNum ) AS salesSUM FROM sales WHERE sales.`year` =" +
+    req.query.year + " and `month` =" + req.query.month +
+    " GROUP BY sales.brand ORDER BY salesSUM DESC;"
 
     //console.log('localsql is ' + localsql);
 
@@ -123,6 +146,27 @@ exports.getHeat = function (req, res) {
         res.status(200).end("enter year&week or begindate&enddate");
         return -1;
     }
+
+    //console.log('localsql is ' + localsql);
+
+    db(localsql, function (err, resdata) {
+        if (err) {
+            res.end("查询失败：", err)
+        } else {
+            res.status(200).send(resdata);
+        }
+    });
+}
+
+exports.getHeatRank = function (req, res) {
+    console.log(req.query);
+    if(!req.query.year || !req.query.week){
+        res.status(200).end("enter year and week");
+        return -1;
+    }
+
+    var localsql = 
+    "SELECT Sum(heat.heat) AS heatSUM, heat.brand FROM heat WHERE year=" + req.query.year + " and week=" + req.query.week + " GROUP BY heat.brand ORDER BY heatSUM DESC;"
 
     console.log('localsql is ' + localsql);
 

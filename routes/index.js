@@ -26,16 +26,27 @@ router.get('/get/impression/', query.getImpression);
 
 /**
  * 参数 model
- * 参数 year
- * 参数 month
+ * 可选参数 year & month
  */
 router.get('/get/sales/', query.getSales);
 
+/**某月所有品牌的销量
+ * 参数 year
+ * 参数 month
+ */
+router.get('/get/allbrandsales/', query.getAllBrandSales);
+
 /**
  * 参数 brand
- * 可选参数 year&week 或 begindate & enddate
+ * 选择参数 year&week 或 begindate & enddate
  */
 router.get('/get/heat/', query.getHeat);
+
+/**某周所有品牌的热度
+ * 参数 year
+ * 参数 week
+ */
+router.get('/get/heatrank/', query.getHeatRank);
 
 
 module.exports = router;
