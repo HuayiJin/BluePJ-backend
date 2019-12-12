@@ -19,4 +19,9 @@ router.get('/get/ModelRating/', query.getModelRating);
  */
 router.get('/get/FaultDist/', query.getFaultDist);
 
+/**
+ * 参数 model
+ */
+router.get('/get/impression/', query.getImpression);
+
 module.exports = router;
