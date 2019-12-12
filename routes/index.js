@@ -24,4 +24,18 @@ router.get('/get/FaultDist/', query.getFaultDist);
  */
 router.get('/get/impression/', query.getImpression);
 
+/**
+ * 参数 model
+ * 参数 year
+ * 参数 month
+ */
+router.get('/get/sales/', query.getSales);
+
+/**
+ * 参数 brand
+ * 可选参数 year&week 或 begindate & enddate
+ */
+router.get('/get/heat/', query.getHeat);
+
+
 module.exports = router;
