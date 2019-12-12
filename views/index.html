@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>SJTU-E100-TEST</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/data.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/series-label.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/oldie.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+
+    <script type="text/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=M0Pi0G5matEh4ZUSMTHaSB0EmlgQaOYM"></script>
+
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            height: 500px;
+            width: 100%;
+        }
+
+        #r-result {
+            width: 100%;
+        }
+
+        table,
+        td,
+        th {
+            border: 0px solid black;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th {
+            height: 35px;
+            font-size: 20px;
+        }
+
+        td {
+            text-align: left;
+        }
+
+        div {
+            margin: auto;
+        }
+
+        .center {
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #sgmw {
+            margin: 0px;
+            text-align: center;
+        }
+
+        #sgmwframe {
+            margin: auto;
+            width: 90%;
+        }
+
+        .share {
+            margin: auto;
+        }
+
+        #register {
+            height: 1200px;
+        }
+
+        .bigchartbox {
+            border: 0px solid red;
+            position: relative;
+            float: left;
+            left: 51%;
+        }
+
+        .chartbox1 {
+            width: 32%;
+            border: 2px solid lightblue;
+            margin: 5px;
+            float: left;
+            position: relative;
+            right: 50%;
+        }
+
+        .chartbox2 {
+            width: 32%;
+            border: 2px solid lightblue;
+            margin: 5px;
+            float: left;
+            position: relative;
+            right: 50%;
+        }
+
+        .chartbox3 {
+            width: 32%;
+            border: 2px solid lightblue;
+            margin: 5px;
+            float: left;
+            position: relative;
+            right: 50%;
+        }
+
+        .regleft,
+        .regright {
+            margin: 10px;
+            width: 450px;
+            height: 400px;
+            padding: 10px;
+            display: table-cell;
+        }
+
+        #reginfocontainer {
+            width: 900px;
+            margin: auto;
+        }
+
+        #search {
+            height: 100px;
+        }
+
+        h1 {
+            margin: 10px;
+            text-align: left;
+            padding: 20px
+        }
+
+        h2 {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .chartcontainer {
+            width: 90%;
+            padding: 20px;
+            min-width: 400px;
+            height: 400px;
+        }
+
+        #allmap {
+            height: 600px;
+            width: 100%;
+        }
+
+        #r-result {
+            width: 100%;
+        }
+
+        .sgmw-relative {
+            position: relative;
+            width: 1400px;
+            height: 900px
+        }
+
+        .sgmw-a {
+            position: absolute;
+            width: 1400px;
+            height: 900px
+        }
+
+        /* css注释说明： 背景为红色 */
+        .sgmw-b {
+            position: absolute;
+            left: 70px;
+            background: #FF0;
+            width: 1260px;
+            height: 80px
+        }
+
+        /* 背景为黄色 */
+    </style>
+
+</head>
+
+<body 
+    <div id="container">
+        <div id="header">
+            <h1 style="margin-bottom:0;">SJTU-E100-TEST</h1>
+        </div>
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#runtime" data-toggle="tab">车辆历史数据</a>
+            </li>
+            <li>
+                <a href="#rtmap" data-toggle="tab">历史位置信息</a>
+            </li>
+            <li>
+                <a href="#rtdata" data-toggle="tab">实时信息</a>
+            </li>
+            <li>
+                <a href="#share" data-toggle="tab">共享信息</a>
+            </li>
+            <li>
+                <a href="#alert" data-toggle="tab">告警历史数据</a>
+            </li>
+            <li>
+                <a href="#register" data-toggle="tab">注册信息</a>
+            </li>
+        </ul>
+
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="runtime">
+                <h2>车辆历史数据</h2>
+                <div class="bigchartbox">
+                    <div class="chartbox1">
+                        <div id="search2" class="center">
+                            <form action="/users/search/runtime">
+                                <input type="radio" name="searchtype_rt_runtime" checked="checked">
+                                <b>按VIN查找</b>
+                                <input list="VINs" id="car_VIN_rt_runtime" value="LK6ADCE21JB008286">
+                                <datalist id="VINs">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <input type="radio" name="searchtype_rt_runtime">
+                                <b>按车牌号查找</b>
+                                <input list="Nums" id="car_NUM_rt_runtime">
+                                <datalist id="Nums">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <b>数据类型：</b>
+                                <select id="chartselect_runtime_1" name="cars">
+                                    <optgroup label="车辆状态">
+                                        <option value="velocity" selected>速度</option>
+                                        <option value="cumulative_mileage">总行驶里程</option>
+                                        <option value="drive_motor_rpm">电机转速</option>
+                                        <option value="drive_motor_temperature">电机温度</option>
+                                    </optgroup>
+                                    <optgroup label="电池信息">
+                                        <option value="residual_energy">剩余电量</option>
+                                        <option value="high_voltage_battery_current">总电流</option>
+                                        <option value="total_battery_voltage">总电压</option>
+                                        <option value="max_single_voltage">电池最高单体电压</option>
+                                        <option value="min_single_voltage">电池最低单体电压</option>
+                                        <option value="insulation_resistance_value">绝缘阻值</option>
+                                    </optgroup>
+                                    <optgroup label="其他数据">
+                                        <option value="motor_torque">电机转矩</option>
+                                        <option value="motor_controller_current">电机控制器电流</option>
+                                        <option value="motor_controller_voltage">电机控制器电压</option>
+                                    </optgroup>
+                                </select>
+                                选择时间段:
+                                <input type="datetime-local" name="bdaytime_runtime" value="2018-01-01T00:00">~
+                                <input type="datetime-local" name="bdaytime_runtime" value="2019-01-01T00:00"><br>
+                                <input type="button" value="查询" onclick="Submit_rt('runtime', 1)">
+                            </form>
+                        </div>
+                        <div>
+                            <div id="chartcontainer_runtime_1" class="chartcontainer"></div>
+                        </div>
+                    </div>
+                    <div class="chartbox2">
+                        <div id="search2" class="center">
+                            <form action="/users/search/runtime">
+                                <input type="radio" name="searchtype_rt_runtime" checked="checked">
+                                <b>按VIN查找</b>
+                                <input list="VINs" id="car_VIN_rt_runtime" value="LK6ADCE21JB008286">
+                                <datalist id="VINs">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <input type="radio" name="searchtype_rt_runtime">
+                                <b>按车牌号查找</b>
+                                <input list="Nums" id="car_NUM_rt_runtime">
+                                <datalist id="Nums">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <b>数据类型：</b>
+                                <select id="chartselect_runtime_2" name="cars">
+                                        <optgroup label="车辆状态">
+                                            <option value="velocity">速度</option>
+                                            <option value="cumulative_mileage">总行驶里程</option>
+                                            <option value="drive_motor_rpm">电机转速</option>
+                                            <option value="drive_motor_temperature" selected>电机温度</option>
+                                        </optgroup>
+                                        <optgroup label="电池信息">
+                                            <option value="residual_energy">剩余电量</option>
+                                            <option value="high_voltage_battery_current">总电流</option>
+                                            <option value="total_battery_voltage">总电压</option>
+                                            <option value="max_single_voltage">电池最高单体电压</option>
+                                            <option value="min_single_voltage">电池最低单体电压</option>
+                                            <option value="insulation_resistance_value">绝缘阻值</option>
+                                        </optgroup>
+                                        <optgroup label="其他数据">
+                                            <option value="motor_torque">电机转矩</option>
+                                            <option value="motor_controller_current">电机控制器电流</option>
+                                            <option value="motor_controller_voltage">电机控制器电压</option>
+                                        </optgroup>
+                                    </select>
+                                选择时间段:
+                                <input type="datetime-local" name="bdaytime_runtime" value="2018-01-01T00:00">~
+                                <input type="datetime-local" name="bdaytime_runtime" value="2019-01-01T00:00"><br>
+                                <input type="button" value="查询" onclick="Submit_rt('runtime', 2)">
+                            </form>
+                        </div>
+                        <div>
+                            <div id="chartcontainer_runtime_2" class="chartcontainer"></div>
+                        </div>
+                    </div>
+                    <div class="chartbox3">
+                        <div id="search2" class="center">
+                            <form action="/users/search/runtime">
+                                <input type="radio" name="searchtype_rt_runtime" checked="checked">
+                                <b>按VIN查找</b>
+                                <input list="VINs" id="car_VIN_rt_runtime" value="LK6ADCE21JB008286">
+                                <datalist id="VINs">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <input type="radio" name="searchtype_rt_runtime">
+                                <b>按车牌号查找</b>
+                                <input list="Nums" id="car_NUM_rt_runtime">
+                                <datalist id="Nums">
+                                    <option value="1">
+                                    <option value="LK6ADCE21JB008286">
+                                </datalist><br>
+
+                                <b>数据类型：</b>
+                                <select id="chartselect_runtime_3" name="cars">
+                                        <optgroup label="车辆状态">
+                                            <option value="velocity" selected>速度</option>
+                                            <option value="cumulative_mileage" selected>总行驶里程</option>
+                                            <option value="drive_motor_rpm">电机转速</option>
+                                            <option value="drive_motor_temperature">电机温度</option>
+                                        </optgroup>
+                                        <optgroup label="电池信息">
+                                            <option value="residual_energy">剩余电量</option>
+                                            <option value="high_voltage_battery_current">总电流</option>
+                                            <option value="total_battery_voltage">总电压</option>
+                                            <option value="max_single_voltage">电池最高单体电压</option>
+                                            <option value="min_single_voltage">电池最低单体电压</option>
+                                            <option value="insulation_resistance_value">绝缘阻值</option>
+                                        </optgroup>
+                                        <optgroup label="其他数据">
+                                            <option value="motor_torque">电机转矩</option>
+                                            <option value="motor_controller_current">电机控制器电流</option>
+                                            <option value="motor_controller_voltage">电机控制器电压</option>
+                                        </optgroup>
+                                    </select>
+                                选择时间段:
+                                <input type="datetime-local" name="bdaytime_runtime" value="2018-01-01T00:00">~
+                                <input type="datetime-local" name="bdaytime_runtime" value="2019-01-01T00:00"><br>
+                                <input type="button" value="查询" onclick="Submit_rt('runtime', 3)">
+                            </form>
+                        </div>
+                        <div>
+                            <div id="chartcontainer_runtime_3" class="chartcontainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="rtmap">
+                <div id="searchmap" class="center">
+                    <h2>车辆地图数据</h2>
+                    <form action="/users/search/runtime">
+                        <input type="radio" name="searchtype_rt_rtmap" checked="checked">
+                        <b>按VIN查找</b>
+                        <input list="VINs" id="car_VIN_rt_rtmap" value="LK6ADCE21JB008286">
+                        <datalist id="VINs">
+                            <option value="1">
+                            <option value="LK6ADCE21JB008286">
+                        </datalist><br>
+
+                        <input type="radio" name="searchtype_rt_rtmap">
+                        <b>按车牌号查找</b>
+                        <input list="Nums" id="car_NUM_rt_rtmap">
+                        <datalist id="Nums">
+                            <option value="1">
+                            <option value="LK6ADCE21JB008286">
+                        </datalist><br>
+
+                        选择时间段:
+                        <input type="datetime-local" name="bdaytime_rtmap" value="2018-01-01T00:00">~
+                        <input type="datetime-local" name="bdaytime_rtmap" value="2019-01-01T00:00"><br>
+                        <input type="button" value="查询" onclick="Submit_rt('rtmap', 0)">
+                    </form>
+                </div>
+                <div id="allmap"></div>
+                <div id="r-result">
+                    <input type="button" onclick="remove_overlay();" value="删除覆盖物" />
+                </div>
+            </div>
+            <div class="tab-pane fade" id="rtdata">
+                <div class="sgmw-relative">
+                    <div class="sgmw-a" id="sgmw">
+                        <iframe id="sgmwframe" src="https://cloud.sgmw.com.cn" height="900" width="1400"
+                            frameborder="0">
+                            <p>您的浏览器不支持 iframe 标签。</p>
+                        </iframe>
+                    </div>
+                    <div class="sgmw-b">
+                        <img src="SJTU-ICEVIC.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="share">
+                <div class="share">
+                    <iframe id="shareframe" src="https://console.ezcarsharing.com/blackbird/order/" height="700"
+                        width=100%>
+                        <p>您的浏览器不支持 iframe 标签。</p>
+                    </iframe>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="alert">
+                <div id="search4" class="center">
+                    <h2>告警历史数据</h2>
+                    <form action="">
+                        <input type="radio" name="searchtype_rt_alert" checked="checked">
+                        <b>按VIN查找</b>
+                        <input list="VINs" id="car_VIN_rt_alert" value="LK6ADCE21JB008286">
+                        <datalist id="VINs">
+                            <option value="1">
+                            <option value="LK6ADCE21JB008286">
+                        </datalist><br>
+
+                        <input type="radio" name="searchtype_rt_alert">
+                        <b>按车牌号查找</b>
+                        <input list="Nums" id="car_NUM_rt_alert">
+                        <datalist id="Nums">
+                            <option value="1">
+                            <option value="LK6ADCE21JB008286">
+                        </datalist><br>
+
+                        选择时间段:
+                        <input type="datetime-local" name="bdaytime_alert" value="2018-01-01T00:00">~
+                        <input type="datetime-local" name="bdaytime_alert" value="2019-01-01T00:00"><br>
+                        <input type="button" value="查询" onclick="Submit_rt('alert', 0)">
+                    </form>
+                </div>
+                <div id="alerttable">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="register">
+                <h2>注册信息</h2>
+                <div id="search1" class="center">
+                    <form action="/users/search/register">
+                        <input type="radio" name="searchtype_reg" checked="checked">
+                        <b>按VIN查找</b>
+                        <input list="VINs" id="car_VIN_reg" value="LK6ADCE21JB008286">
+                        <datalist id="VINs">
+                            <option value="1"></option>
+                            <option value="LK6ADCE21JB008286" selected></option>
+                        </datalist><br>
+
+                        <input type="radio" name="searchtype_reg">
+                        <b>按车牌号查找</b>
+                        <input list="Nums" id="car_NUM_reg">
+                        <datalist id="Nums">
+                            <option value="1">
+                            <option value="LK6ADCE21JB008286">
+                        </datalist><br>
+                        <input type="button" value="查询" onclick="Submit_reg()">
+                    </form>
+                </div>
+                <div id="reginfocontainer">
+                    <div id="regcontent1" class="regleft">
+                        <table id='regtable1'>
+                            <tr>
+                                <th>车辆VIN</th>
+                            </tr>
+                            <tr>
+                                <th>注册时间</th>
+                            </tr>
+                            <tr>
+                                <th>车辆类型</th>
+                            </tr>
+                            <tr>
+                                <th>储能装置种类</th>
+                            </tr>
+                            <tr>
+                                <th>驱动电机类型</th>
+                            </tr>
+                            <tr>
+                                <th>电机额定功率</th>
+                            </tr>
+                            <tr>
+                                <th>电机额定转速</th>
+                            </tr>
+                            <tr>
+                                <th>电机额定转矩</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="regcontent2" class="regright">
+                        <table id='regtable2'>
+                            <tr>
+                                <th>电机安装数量</th>
+                            </tr>
+                            <tr>
+                                <th>电机布置位置</th>
+                            </tr>
+                            <tr>
+                                <th>电机冷却方式</th>
+                            </tr>
+                            <tr>
+                                <th>电动汽车续航里程</th>
+                            </tr>
+                            <tr>
+                                <th>电动汽车最高时速</th>
+                            </tr>
+                            <tr>
+                                <th>电池包数量</th>
+                            </tr>
+                            <tr>
+                                <th>电池包信息</th>
+                            </tr>
+                            <tr>
+                                <th>额外字段</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
