@@ -14,7 +14,7 @@ var app = express();
 
 //注释掉默认的，自己手动修改默认引擎;
 var nunjucks = require('nunjucks');
-nunjucks.configure(path.join(__dirname, 'views'), {
+nunjucks.configure(path.join(__dirname, '../BluePJ-frontend/views'), {
     autoescape: true,
     express: app,
     watch: true
@@ -25,7 +25,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../BluePJ-frontend/public')));
 
 app.use('/', indexRouter);
 
